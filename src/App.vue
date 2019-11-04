@@ -5,7 +5,16 @@
             alt="Vue logo"
             src="./assets/logo.png"
         >
-        <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <div
+            v-if="need.HelloWorld"
+            class="app-container"
+        >
+            <div class="app-wrapper">
+                <HelloWorld
+                    msg="Welcome to Your Vue.js App"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -16,6 +25,13 @@
         name: 'app',
         components: {
             HelloWorld,
+        },
+        data() {
+            return {
+                need: {
+                    HelloWorld: true,
+                },
+            };
         },
     }
 </script>
@@ -32,5 +48,15 @@
     .app-logo {
         margin: 0 auto;
         display: block;
+    }
+
+    .app-container {
+        margin: 10px auto;
+        width: 980px;
+    }
+
+    .app-wrapper {
+        border: 2px solid #eee;
+        padding: 5px;
     }
 </style>
