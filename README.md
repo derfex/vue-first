@@ -1,4 +1,4 @@
-# vue-first
+# Elaboration: Vue
 
 ## Project setup
 ```
