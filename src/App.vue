@@ -25,25 +25,40 @@
                 />
             </div>
         </div>
+        <div
+            v-if="need.UserBrowser"
+            class="app-container"
+        >
+            <div class="app-wrapper">
+                <UserBrowser/>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import BaseSwitchCollection from './components/Base/BaseCheckboxCollection.vue'
+
+    // Works.
     import HelloWorld from './components/Works/HelloWorld.vue'
+    import UserBrowser from './components/Works/UserBrowser.vue'
 
     export default {
         name: 'app',
         components: {
             BaseSwitchCollection,
+
+            // Works.
             HelloWorld,
+            UserBrowser,
         },
         data() {
             return {
                 need: {
-                    HelloWorld: true,
+                    HelloWorld: false,
+                    UserBrowser: true,
                 },
-            };
+            }
         },
     }
 </script>
