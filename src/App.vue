@@ -30,7 +30,7 @@
 
 <script>
     import BaseSwitchCollection from './components/Base/BaseCheckboxCollection.vue'
-    import HelloWorld from './components/HelloWorld.vue'
+    import HelloWorld from './components/Works/HelloWorld.vue'
 
     export default {
         name: 'app',
