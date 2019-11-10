@@ -9,15 +9,15 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     const storeModuleName = 'clickCounter'
 
     export default {
         name: 'ClickCounter',
-        computed: {
-            count() {
-                return this.$store.state[storeModuleName].count
-            },
-        },
+        computed: mapState({
+            count: state => state[storeModuleName].count
+        }),
         methods: {
             increment() {
                 this.$store.commit(storeModuleName + '/increment')
