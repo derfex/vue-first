@@ -199,50 +199,58 @@
     }
 </script>
 
-<style scoped>
-    .app-root {
+<style lang="scss" scoped>
+    $prefix: '.app-';
+    $list: $prefix + 'list';
+
+    $hover_background: #d9f1e6; /* light color from Vue logo */
+
+
+    #{$prefix}root {
         font-family: sans-serif;
         color: #333;
+
+        button {
+            padding: 1px 5px;
+            cursor: pointer;
+        }
     }
 
-    .app-root button {
-        padding: 1px 5px;
-        cursor: pointer;
-    }
-
-    .app-list {
+    #{$list} {
         border-collapse: collapse;
+
+        &__row {
+            height: 35px;
+        }
     }
 
-    .app-list__row {
-        height: 35px;
+    #{$list}__body {
+        #{$list}__row:nth-child(odd) {
+            background: #f2f2f2;
+        }
+
+        #{$list}__row:hover {
+            background: $hover_background;
+        }
     }
 
-    .app-list__body .app-list__row:nth-child(odd) {
-        background: #f2f2f2;
-    }
-
-    .app-list__body .app-list__row:hover {
-        background: #d9f1e6; /* light color from Vue logo */
-    }
-
-    .app-list__cell {
+    #{$list}__cell {
         padding: 5px;
+
+        &--score {
+            text-align: right;
+        }
+
+        &--actions {
+            width: 30px;
+        }
     }
 
-    .app-list__cell--score {
-        text-align: right;
-    }
-
-    .app-list__cell--actions {
-        width: 30px;
-    }
-
-    .app-list__remove:after {
+    #{$list}__remove:after {
         content: '×';
     }
 
-    .app-list__add:after {
+    #{$list}__add:after {
         content: '+';
     }
 </style>
