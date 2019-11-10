@@ -45,11 +45,11 @@
         data() {
             return {
                 customNumber: 0,
-                records: [],
             }
         },
         computed: {
             ...mapState({
+                records: state => state[storeModuleName].records,
                 count: state => state[storeModuleName].count,
             }),
             sum() {
@@ -64,13 +64,13 @@
         methods: {
             // region ## The first sum
             appendCustom() {
-                this.records.push({
+                this.$store.commit(storeModuleName + '/appendRecord', {
                     type: 'CUSTOM',
                     value: this.customNumber,
                 })
             },
             appendSystem() {
-                this.records.push({
+                this.$store.commit(storeModuleName + '/appendRecord', {
                     type: 'SYSTEM',
                     value: getRandomInteger(-50, 50),
                 })
