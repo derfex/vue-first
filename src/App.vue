@@ -33,6 +33,14 @@
                 <UserBrowser/>
             </div>
         </div>
+        <div
+            v-if="need.ClickCounter"
+            class="app-container"
+        >
+            <div class="app-wrapper">
+                <ClickCounter/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -42,6 +50,7 @@
     // Works.
     import HelloWorld from './components/Works/HelloWorld.vue'
     import UserBrowser from './components/Works/UserBrowser.vue'
+    import ClickCounter from './components/Works/ClickCounter.vue'
 
     export default {
         name: 'app',
@@ -51,12 +60,14 @@
             // Works.
             HelloWorld,
             UserBrowser,
+            ClickCounter,
         },
         data() {
             return {
                 need: {
                     HelloWorld: false,
                     UserBrowser: true,
+                    ClickCounter: true,
                 },
             }
         },
