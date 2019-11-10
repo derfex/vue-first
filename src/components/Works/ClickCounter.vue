@@ -9,23 +9,34 @@
 </template>
 
 <script>
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+
+    Vue.use(Vuex)
+
+    const store = new Vuex.Store({
+        state: {
+            count: 0,
+        },
+        mutations: {
+            increment: state => state.count++,
+            decrement: state => state.count--,
+        },
+    })
+
     export default {
         name: 'ClickCounter',
-
-        // State.
-        data() {
-            return {
-                count: 0,
-            }
+        computed: {
+            count() {
+                return store.state.count
+            },
         },
-
-        // Actions.
         methods: {
             increment() {
-                this.count++
+                store.commit('increment')
             },
             decrement() {
-                this.count--
+                store.commit('decrement')
             },
         },
     }
