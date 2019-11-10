@@ -1,10 +1,20 @@
 <template>
     <div id="app">
-        <img
-            class="app-logo"
-            alt="Vue logo"
-            src="./assets/logo.png"
-        >
+        <div class="app-container">
+            <div class="app-control-panel">
+                <img
+                    class="app-logo"
+                    alt="Vue logo"
+                    src="./assets/logo.png"
+                >
+                <div class="app-works">
+                    <h2>List of works</h2>
+                    <BaseSwitchCollection
+                        :flags="need"
+                    />
+                </div>
+            </div>
+        </div>
         <div
             v-if="need.HelloWorld"
             class="app-container"
@@ -19,11 +29,13 @@
 </template>
 
 <script>
+    import BaseSwitchCollection from './components/Base/BaseCheckboxCollection.vue'
     import HelloWorld from './components/HelloWorld.vue'
 
     export default {
         name: 'app',
         components: {
+            BaseSwitchCollection,
             HelloWorld,
         },
         data() {
@@ -58,5 +70,14 @@
     .app-wrapper {
         border: 2px solid #eee;
         padding: 5px;
+    }
+
+    .app-control-panel {
+        display: flex;
+    }
+
+    .app-works {
+        margin-left: -250px;
+        width: 250px;
     }
 </style>
