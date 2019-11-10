@@ -9,34 +9,21 @@
 </template>
 
 <script>
-    import Vue from 'vue'
-    import Vuex from 'vuex'
-
-    Vue.use(Vuex)
-
-    const store = new Vuex.Store({
-        state: {
-            count: 0,
-        },
-        mutations: {
-            increment: state => state.count++,
-            decrement: state => state.count--,
-        },
-    })
+    const storeModuleName = 'clickCounter'
 
     export default {
         name: 'ClickCounter',
         computed: {
             count() {
-                return store.state.count
+                return this.$store.state[storeModuleName].count
             },
         },
         methods: {
             increment() {
-                store.commit('increment')
+                this.$store.commit(storeModuleName + '/increment')
             },
             decrement() {
-                store.commit('decrement')
+                this.$store.commit(storeModuleName + '/decrement')
             },
         },
     }
