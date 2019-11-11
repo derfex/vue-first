@@ -52,13 +52,11 @@
                 records: state => state[storeModuleName].records,
                 count: state => state[storeModuleName].count,
             }),
-            sum() {
-                return this.records.reduce((previousValue, record) => (
-                    previousValue + record.value
-                ), 0)
+            recordsSum() {
+                return this.$store.getters[storeModuleName + '/recordsSum']
             },
             total() {
-                return this.sum + this.count
+                return this.recordsSum + this.count
             },
         },
         methods: {
