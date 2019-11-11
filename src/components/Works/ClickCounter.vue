@@ -33,7 +33,10 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import {
+        mapState,
+        mapGetters,
+    } from 'vuex'
 
     const storeModuleName = 'clickCounter'
     const getRandomInteger = function getRandomInteger(min, max) {
@@ -52,9 +55,9 @@
                 records: state => state[storeModuleName].records,
                 count: state => state[storeModuleName].count,
             }),
-            recordsSum() {
-                return this.$store.getters[storeModuleName + '/recordsSum']
-            },
+            ...mapGetters({
+                recordsSum: storeModuleName + '/recordsSum',
+            }),
             total() {
                 return this.recordsSum + this.count
             },
