@@ -20,6 +20,7 @@
                 <button @click="appendCustom">Append custom</button>
             </label>
             <button @click="appendSystem">Append system</button>
+            <button @click="appendMedium">Append medium</button>
         </p>
         <hr class="separator">
         <p>{{ count }}</p>
@@ -36,6 +37,7 @@
     import {
         mapState,
         mapGetters,
+        mapActions,
     } from 'vuex'
 
     const storeModuleName = 'clickCounter'
@@ -76,6 +78,9 @@
                     value: getRandomInteger(-50, 50),
                 })
             },
+            ...mapActions({
+                appendMedium: storeModuleName + '/appendMediumRecord',
+            }),
             // endregion ## The first sum
 
             // region ## Additional count
