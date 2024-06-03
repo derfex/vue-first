@@ -1,15 +1,14 @@
 <template>
-  <div class="about">
+  <div class="app-about-container">
     <h1>This is an about page</h1>
   </div>
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
-  .about {
+  .app-about-container {
     display: flex;
     align-items: center;
-    min-height: 100vh;
   }
 }
 </style>
