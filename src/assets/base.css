@@ -1,3 +1,5 @@
+@import './reset.css';
+
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
@@ -53,13 +55,8 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
   margin: 0;
   font-weight: normal;
-}
-
-html, body {
-  height: 100%;
 }
 
 body {
