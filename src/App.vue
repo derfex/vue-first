@@ -5,13 +5,14 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header class="app-header">
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
+    <img alt="Vue logo" class="app-logo" src="@/assets/logo.svg" />
 
-    <div class="wrapper">
+    <div class="app-wrapper">
       <HelloWorld msg="You did it!" />
 
       <nav class="app-nav">
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/works">Works</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
@@ -25,7 +26,7 @@ import HelloWorld from './components/HelloWorld.vue'
   line-height: 1.5;
 }
 
-.logo {
+.app-logo {
   display: block;
   margin: 0 auto 2rem;
   width: 125px;
@@ -64,11 +65,11 @@ import HelloWorld from './components/HelloWorld.vue'
     padding-right: calc(var(--section-gap) / 2);
   }
 
-  .logo {
+  .app-logo {
     margin: 0 2rem 0 0;
   }
 
-  .app-header .wrapper {
+  .app-header .app-wrapper {
     display: flex;
     flex-wrap: wrap;
     place-items: flex-start;
