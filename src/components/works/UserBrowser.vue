@@ -3,14 +3,14 @@ import { GamePlayersService } from '../../entities/game-players/game-players.ser
 import type { GamePlayer } from '../../entities/game-players/game-players.type'
 
 export default {
-  name: 'UserBrowser',
+  name: 'GamePlayersBrowser',
   data() {
     return {
       hover: {
         has: false,
         id: null,
       },
-      list: [] as UserForUserBrowser[],
+      list: [] as BrowserRecord[],
       newUser: {
         id: 1,
         name: '',
@@ -28,10 +28,10 @@ export default {
     processedList() {
       return this.list
         .slice(0)
-        .filter((item: UserForUserBrowser) =>
+        .filter((item: BrowserRecord) =>
           item.nameLowerCase.includes(this.searchString.toLocaleLowerCase()),
         )
-        .sort((a: UserForUserBrowser, b: UserForUserBrowser): number =>
+        .sort((a: BrowserRecord, b: BrowserRecord): number =>
           this.sortState.ascending ? a.score - b.score : b.score - a.score,
         )
     },
@@ -67,14 +67,14 @@ export default {
     },
     remove(id: number): void {
       for (let i = this.list.length - 1; i > -1; --i) {
-        const user: UserForUserBrowser = this.list[i]
+        const user: BrowserRecord = this.list[i]
         if (user.id === id) {
           this.list.splice(i, 1)
           return
         }
       }
     },
-    add(name: UserForUserBrowser['name'], score: UserForUserBrowser['score']) {
+    add(name: BrowserRecord['name'], score: BrowserRecord['score']) {
       const nameLowerCase = name.toLowerCase()
       const user = {
         id: this.newUser.id++,
@@ -87,19 +87,21 @@ export default {
   },
 }
 
-interface UserForUserBrowser {
+interface GamePlayerForGamePlayersBrowser {
   readonly id: GamePlayer['id']
   readonly name: GamePlayer['name']
   readonly nameLowerCase: GamePlayer['name']
   readonly score: GamePlayer['score']
 }
 
+type BrowserRecord = GamePlayerForGamePlayersBrowser
+
 function getUsers(): ReadonlyArray<GamePlayer> {
   return GamePlayersService.readList()
 }
 
-function prepareUsers(users: ReadonlyArray<GamePlayer>): ReadonlyArray<UserForUserBrowser> {
-  return users.map((user): UserForUserBrowser => {
+function prepareUsers(users: ReadonlyArray<GamePlayer>): ReadonlyArray<BrowserRecord> {
+  return users.map((user): BrowserRecord => {
     return {
       ...user,
       nameLowerCase: user.name.toLocaleLowerCase(),
