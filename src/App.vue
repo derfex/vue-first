@@ -1,109 +1,86 @@
-<template>
-    <div id="app">
-        <div class="app-container">
-            <div class="app-control-panel">
-                <img
-                    class="app-logo"
-                    alt="Vue logo"
-                    src="./assets/logo.png"
-                >
-                <div class="app-works">
-                    <h2>List of works</h2>
-                    <BaseSwitchCollection
-                        :flags="need"
-                    />
-                </div>
-            </div>
-        </div>
-        <div
-            v-if="need.HelloWorld"
-            class="app-container"
-        >
-            <div class="app-wrapper">
-                <HelloWorld
-                    msg="Welcome to Your Vue.js App"
-                />
-            </div>
-        </div>
-        <div
-            v-if="need.UserBrowser"
-            class="app-container"
-        >
-            <div class="app-wrapper">
-                <UserBrowser/>
-            </div>
-        </div>
-        <div
-            v-if="need.ClickCounter"
-            class="app-container"
-        >
-            <div class="app-wrapper">
-                <ClickCounter/>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-    import BaseSwitchCollection from './components/Base/BaseCheckboxCollection.vue'
-
-    // Works.
-    import HelloWorld from './components/Works/HelloWorld.vue'
-    import UserBrowser from './components/Works/UserBrowser.vue'
-    import ClickCounter from './components/Works/ClickCounter.vue'
-
-    export default {
-        name: 'app',
-        components: {
-            BaseSwitchCollection,
-
-            // Works.
-            HelloWorld,
-            UserBrowser,
-            ClickCounter,
-        },
-        data() {
-            return {
-                need: {
-                    HelloWorld: false,
-                    UserBrowser: true,
-                    ClickCounter: true,
-                },
-            }
-        },
-    }
+<script lang="ts" setup>
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
 </script>
 
-<style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
+<template>
+  <header class="app-header">
+    <img alt="Vue logo" class="app-logo" src="@/assets/logo.svg" />
 
-    .app-logo {
-        margin: 0 auto;
-        display: block;
-    }
+    <div class="app-wrapper">
+      <HelloWorld msg="You did it!" />
 
-    .app-container {
-        margin: 10px auto;
-        width: 980px;
-    }
+      <nav class="app-nav">
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/works">Works</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
+    </div>
+  </header>
 
-    .app-wrapper {
-        border: 2px solid #eee;
-        padding: 5px;
-    }
+  <RouterView />
+</template>
 
-    .app-control-panel {
-        display: flex;
-    }
+<style scoped>
+.app-header {
+  line-height: 1.5;
+}
 
-    .app-works {
-        margin-left: -250px;
-        width: 250px;
-    }
+.app-logo {
+  display: block;
+  margin: 0 auto 2rem;
+  width: 125px;
+  height: 125px;
+}
+
+.app-nav {
+  margin-top: 2rem;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+}
+
+.app-nav a.router-link-exact-active {
+  color: var(--color-text);
+}
+
+.app-nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+.app-nav a {
+  display: inline-block;
+  border-left: 1px solid var(--color-border);
+  padding: 0 1rem;
+}
+
+.app-nav a:first-of-type {
+  border: 0;
+}
+
+@media (min-width: 1024px) {
+  .app-header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .app-logo {
+    margin: 0 2rem 0 0;
+  }
+
+  .app-header .app-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    place-items: flex-start;
+  }
+
+  .app-nav {
+    margin-top: 1rem;
+    margin-left: -1rem;
+    padding: 1rem 0;
+    font-size: 1rem;
+    text-align: left;
+  }
+}
 </style>
