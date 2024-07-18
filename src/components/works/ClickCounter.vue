@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useCounterStore } from '@/stores/counter'
+import { CounterRecordKind } from '../../entities/counter-records/counter-records.type'
+import { useCounterStore } from '../../stores/counter'
 
 // # data
 const store = useCounterStore()
@@ -14,19 +15,19 @@ const total = computed((): number => store.recordsSum + store.count)
 // region ## The first sum
 function appendCustom(): void {
   store.addRecord({
-    kind: 'CUSTOM',
+    kind: CounterRecordKind.Custom,
     value: customNumber.value,
   })
 }
 function appendMedium(): void {
   store.addRecord({
-    kind: 'MEDIUM',
+    kind: CounterRecordKind.Medium,
     value: getRandomInteger(-50, 50),
   })
 }
 function appendSystem(): void {
   store.addRecord({
-    kind: 'SYSTEM',
+    kind: CounterRecordKind.System,
     value: getRandomInteger(-50, 50),
   })
 }

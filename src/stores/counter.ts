@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref, type ComputedRef, type Ref } from 'vue'
+import type { CounterRecord } from '~/entities/counter-records/counter-records.type'
 
 export const useCounterStore = defineStore('counter', (): CounterStore => {
   const count = ref(0)
@@ -33,15 +34,4 @@ interface CounterStore {
   readonly increment: () => void
   readonly records: Ref<CounterRecord[]>
   readonly recordsSum: ComputedRef<number>
-}
-
-interface CounterRecord {
-  readonly kind: CounterRecordKind
-  readonly value: number
-}
-
-enum CounterRecordKind {
-  Custom = 'CUSTOM',
-  Medium = 'MEDIUM',
-  System = 'SYSTEM',
 }
