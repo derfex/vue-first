@@ -1,92 +1,88 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue'
 import { GamePlayersService } from '../../entities/game-players/game-players.service'
 import type { GamePlayer } from '../../entities/game-players/game-players.type'
 
-export default {
-  name: 'GamePlayersBrowser',
-  data() {
-    return {
-      hover: {
-        has: false,
-        id: null,
-      },
-      list: [] as BrowserRecord[],
-      newUser: {
-        id: 1,
-        name: '',
-        score: 0,
-      } as GamePlayer,
-      searchString: '',
-      sortState: {
-        ascending: true,
-        buttonText: '↓',
-      },
-    }
-  },
+// # data.
+const hover = ref<BrowserHoverData>({
+  has: false,
+  id: null,
+})
+const list = ref<BrowserRecord[]>([])
+const formRecord = ref<GamePlayerForForm>({
+  id: 1,
+  name: '',
+  score: 0,
+})
+const searchString = ref<string>('')
+const sortingState = ref({
+  ascending: true,
+  buttonText: '↓',
+})
 
-  computed: {
-    processedList() {
-      return this.list
-        .slice(0)
-        .filter((item: BrowserRecord) =>
-          item.nameLowerCase.includes(this.searchString.toLocaleLowerCase()),
-        )
-        .sort((a: BrowserRecord, b: BrowserRecord): number =>
-          this.sortState.ascending ? a.score - b.score : b.score - a.score,
-        )
-    },
-  },
+// # computed.
+const processedList = computed(() => {
+  return list.value
+    .filter((item: BrowserRecord) =>
+      item.nameLowerCase.includes(searchString.value.toLocaleLowerCase()),
+    )
+    .sort((a: BrowserRecord, b: BrowserRecord): number =>
+      sortingState.value.ascending ? a.score - b.score : b.score - a.score,
+    )
+})
 
-  created() {
-    fillDefaultList.call(this)
-  },
+// # created.
+onMounted(() => {
+  fillDefaultList()
+})
 
-  methods: {
-    resetUserList() {
-      fillDefaultList.call(this)
-    },
-
-    // region ## Table hover
-    // For this purpose CSS is more suitable. Task: implement using Vue.js.
-    tableHoverTurnOff(): void {
-      this.hover.has = false
-      this.hover.id = null
-    },
-    tableHoverSetID(id: number): void {
-      this.hover.has = true
-      this.hover.id = id
-    },
-    tableHoverActionIsVisible(id: number): boolean {
-      return this.hover.has && this.hover.id === id
-    },
-    // endregion ## Table hover
-
-    sort() {
-      this.sortState.ascending = !this.sortState.ascending
-      this.sortState.buttonText = this.sortState.ascending ? '↓' : '↑'
-    },
-    remove(id: number): void {
-      for (let i = this.list.length - 1; i > -1; --i) {
-        const user: BrowserRecord = this.list[i]
-        if (user.id === id) {
-          this.list.splice(i, 1)
-          return
-        }
-      }
-    },
-    add(name: BrowserRecord['name'], score: BrowserRecord['score']) {
-      const nameLowerCase = name.toLowerCase()
-      const user = {
-        id: this.newUser.id++,
-        name,
-        nameLowerCase,
-        score,
-      }
-      this.list.push(user)
-    },
-  },
+// # methods.
+function resetList() {
+  fillDefaultList()
 }
 
+// region ## Table hover
+// For this purpose CSS is more suitable. Task: implement using Vue.js.
+function tableHoverTurnOff(): void {
+  hover.value.has = false
+  hover.value.id = null
+}
+function tableHoverSetID(id: number): void {
+  hover.value.has = true
+  hover.value.id = id
+}
+function tableHoverActionIsVisible(id: number): boolean {
+  return hover.value.has && hover.value.id === id
+}
+// endregion ## Table hover
+
+function add(name: BrowserRecord['name'], score: BrowserRecord['score']) {
+  const nameLowerCase = name.toLowerCase()
+  const gamePlayer = {
+    id: formRecord.value.id++,
+    name,
+    nameLowerCase,
+    score,
+  }
+  list.value.push(gamePlayer)
+}
+
+function sort() {
+  sortingState.value.ascending = !sortingState.value.ascending
+  sortingState.value.buttonText = sortingState.value.ascending ? '↓' : '↑'
+}
+
+function remove(id: number): void {
+  for (let i = list.value.length - 1; i > -1; --i) {
+    const gamePlayer: BrowserRecord = list.value[i]
+    if (gamePlayer.id === id) {
+      list.value.splice(i, 1)
+      return
+    }
+  }
+}
+
+// # private.
 interface GamePlayerForGamePlayersBrowser {
   readonly id: GamePlayer['id']
   readonly name: GamePlayer['name']
@@ -96,28 +92,39 @@ interface GamePlayerForGamePlayersBrowser {
 
 type BrowserRecord = GamePlayerForGamePlayersBrowser
 
-function getUsers(): ReadonlyArray<GamePlayer> {
-  return GamePlayersService.readList()
+interface GamePlayerForForm {
+  id: GamePlayer['id']
+  readonly name: GamePlayer['name']
+  readonly score: GamePlayer['score']
 }
 
-function prepareUsers(users: ReadonlyArray<GamePlayer>): ReadonlyArray<BrowserRecord> {
-  return users.map((user): BrowserRecord => {
-    return {
-      ...user,
-      nameLowerCase: user.name.toLocaleLowerCase(),
-    }
-  })
+interface BrowserHoverData {
+  id: GamePlayer['id'] | null
+  has: boolean
 }
 
 function fillDefaultList(): void {
-  this.list = prepareUsers(getUsers())
-  this.newUser.id = this.list.length + 1
+  list.value = [...prepareGamePlayers(getGamePlayers())]
+  formRecord.value.id = list.value.length + 1
+}
+
+function getGamePlayers(): ReadonlyArray<GamePlayer> {
+  return GamePlayersService.readList()
+}
+
+function prepareGamePlayers(gamePlayers: ReadonlyArray<GamePlayer>): ReadonlyArray<BrowserRecord> {
+  return gamePlayers.map((gamePlayer): BrowserRecord => {
+    return {
+      ...gamePlayer,
+      nameLowerCase: gamePlayer.name.toLocaleLowerCase(),
+    }
+  })
 }
 </script>
 
 <template>
   <div class="app-root">
-    <button @click="resetUserList">Reset user list</button>
+    <button @click="resetList">Reset game players list</button>
     <br />
     <table class="app-list">
       <thead>
@@ -129,7 +136,7 @@ function fillDefaultList(): void {
           </th>
           <th class="app-list__cell">
             Score
-            <button @click="sort">{{ sortState.buttonText }}</button>
+            <button @click="sort">{{ sortingState.buttonText }}</button>
           </th>
           <th class="app-list__cell"></th>
         </tr>
@@ -137,19 +144,19 @@ function fillDefaultList(): void {
       <tbody class="app-list__body">
         <tr
           class="app-list__row"
-          v-for="user in processedList"
-          :key="user.id"
-          @mouseover="tableHoverSetID(user.id)"
+          v-for="gamePlayer in processedList"
+          :key="gamePlayer.id"
+          @mouseover="tableHoverSetID(gamePlayer.id)"
           @mouseout="tableHoverTurnOff"
         >
-          <td class="app-list__cell">{{ user.id }}</td>
-          <td class="app-list__cell">{{ user.name }}</td>
-          <td class="app-list__cell app-list__cell--score">{{ user.score }}</td>
+          <td class="app-list__cell">{{ gamePlayer.id }}</td>
+          <td class="app-list__cell">{{ gamePlayer.name }}</td>
+          <td class="app-list__cell app-list__cell--score">{{ gamePlayer.score }}</td>
           <td class="app-list__cell app-list__cell--actions">
             <button
               class="app-list__remove"
-              v-show="tableHoverActionIsVisible(user.id)"
-              @click="remove(user.id)"
+              v-show="tableHoverActionIsVisible(gamePlayer.id)"
+              @click="remove(gamePlayer.id)"
               title="Remove"
             ></button>
           </td>
@@ -159,16 +166,16 @@ function fillDefaultList(): void {
         <tr class="app-list__row">
           <td class="app-list__cell"></td>
           <td class="app-list__cell">
-            <input type="text" placeholder="Name" v-model="newUser.name" />
+            <input type="text" placeholder="Name" v-model="formRecord.name" />
           </td>
           <td class="app-list__cell">
-            <input type="number" placeholder="Score" v-model="newUser.score" />
+            <input type="number" placeholder="Score" v-model="formRecord.score" />
           </td>
           <td class="app-list__cell">
             <button
               class="app-list__add"
               title="Add"
-              @click="add(newUser.name, newUser.score)"
+              @click="add(formRecord.name, formRecord.score)"
             ></button>
           </td>
         </tr>

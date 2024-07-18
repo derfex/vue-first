@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import BaseCheckboxCollection from '../components/base/BaseCheckboxCollection.vue'
+import GamePlayersBrowser from '../components/works/GamePlayersBrowser.vue'
 
 const need = ref({
   HelloWorld: false,
-  UserBrowser: true,
+  GamePlayersBrowser: true,
   ClickCounter: true,
 })
 </script>
@@ -19,7 +20,11 @@ const need = ref({
     </div>
     <section class="app-works__section">
       <div class="app-works__scrollable-area">
-        <!-- TODO -->
+        <div v-if="need.GamePlayersBrowser" class="app-container">
+          <div class="app-wrapper">
+            <GamePlayersBrowser />
+          </div>
+        </div>
       </div>
     </section>
   </div>
