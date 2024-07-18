@@ -1,112 +1,94 @@
-<template>
-    <div>
-        <div class="summation">
-            <h2>Records</h2>
-            <ol class="records">
-                <li
-                    v-for="(record, index) in records"
-                    :key="index"
-                >
-                    {{ record.type }} — {{ record.value }}
-                </li>
-            </ol>
-        </div>
-        <p>
-            <label>
-                <input
-                    type="number"
-                    v-model.number="customNumber"
-                >
-                <button @click="appendCustom">Append custom</button>
-            </label>
-            <button @click="appendSystem">Append system</button>
-            <button @click="appendMedium">Append medium</button>
-        </p>
-        <hr class="separator">
-        <p>{{ count }}</p>
-        <p>
-            <button @click="decrement">–</button>
-            <button @click="increment">+</button>
-        </p>
-        <hr class="separator">
-        <p>{{ total }}</p>
-    </div>
-</template>
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
+import { useCounterStore } from '@/stores/counter'
 
-<script>
-    import {
-        mapState,
-        mapGetters,
-        mapActions,
-    } from 'vuex'
+// # data
+const store = useCounterStore()
 
-    const storeModuleName = 'clickCounter'
-    const getRandomInteger = function getRandomInteger(min, max) {
-        return Math.floor(min + Math.random() * (max + 1 - min))
-    }
+const customNumber = ref(0)
 
-    export default {
-        name: 'ClickCounter',
-        data() {
-            return {
-                customNumber: 0,
-            }
-        },
-        computed: {
-            ...mapState({
-                records: state => state[storeModuleName].records,
-                count: state => state[storeModuleName].count,
-            }),
-            ...mapGetters({
-                recordsSum: storeModuleName + '/recordsSum',
-            }),
-            total() {
-                return this.recordsSum + this.count
-            },
-        },
-        methods: {
-            // region ## The first sum
-            appendCustom() {
-                this.$store.commit(storeModuleName + '/appendRecord', {
-                    type: 'CUSTOM',
-                    value: this.customNumber,
-                })
-            },
-            appendSystem() {
-                this.$store.commit(storeModuleName + '/appendRecord', {
-                    type: 'SYSTEM',
-                    value: getRandomInteger(-50, 50),
-                })
-            },
-            ...mapActions({
-                appendMedium: storeModuleName + '/appendMediumRecord',
-            }),
-            // endregion ## The first sum
+// # computed
+const total = computed((): number => store.recordsSum + store.count)
 
-            // region ## Additional count
-            increment() {
-                this.$store.commit(storeModuleName + '/increment')
-            },
-            decrement() {
-                this.$store.commit(storeModuleName + '/decrement')
-            },
-            // endregion ## Additional count
-        },
-    }
+// # methods
+// region ## The first sum
+function appendCustom(): void {
+  store.addRecord({
+    kind: 'CUSTOM',
+    value: customNumber.value,
+  })
+}
+function appendMedium(): void {
+  store.addRecord({
+    kind: 'MEDIUM',
+    value: getRandomInteger(-50, 50),
+  })
+}
+function appendSystem(): void {
+  store.addRecord({
+    kind: 'SYSTEM',
+    value: getRandomInteger(-50, 50),
+  })
+}
+// endregion ## The first sum
+
+// region ## Additional count
+function decrement(): void {
+  store.decrement()
+}
+function increment(): void {
+  store.increment()
+}
+// endregion ## Additional count
+
+// # private
+function getRandomInteger(min: number, max: number): number {
+  return Math.floor(min + Math.random() * (max + 1 - min))
+}
 </script>
 
-<style lang="scss" scoped>
-    $color_border: #eee;
+<template>
+  <div>
+    <h1>Click counter</h1>
+    <section>
+      <div class="summation">
+        <h2>Records</h2>
+        <ol class="records">
+          <li v-for="(record, index) in store.records" :key="index">
+            {{ record.kind }} — {{ record.value }}
+          </li>
+        </ol>
+      </div>
+      <p>
+        <label>
+          <input type="number" v-model.number="customNumber" />
+          <button @click="appendCustom">Append custom</button>
+        </label>
+        <button @click="appendSystem">Append system</button>
+        <button @click="appendMedium">Append medium</button>
+      </p>
+    </section>
+    <section>
+      <h2>Count</h2>
+      <p>{{ store.count }}</p>
+      <p>
+        <button @click="decrement">–</button>
+        <button @click="increment">+</button>
+      </p>
+    </section>
+    <section>
+      <h2>Total</h2>
+      <p>{{ total }}</p>
+    </section>
+  </div>
+</template>
 
+<style lang="sass" scoped>
+$color-border: #eee
 
-    .records {
-        overflow-y: auto;
-        border: 1px solid $color_border;
-        height: 100px;
-        font-family: monospace;
-    }
-
-    .separator {
-        border: 1px solid $color_border;
-    }
+.records
+  overflow-y: auto
+  border: 1px solid $color-border
+  height: 100px
+  font-family: monospace
 </style>
