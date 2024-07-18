@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { GamePlayersService } from '../../entities/game-players/game-players.service'
 import type { GamePlayer } from '../../entities/game-players/game-players.type'
 
-// # data.
+// # data
 const hover = ref<BrowserHoverData>({
   has: false,
   id: null,
@@ -20,10 +20,10 @@ const sortingState = ref({
   buttonText: '↓',
 })
 
-// # computed.
-const processedList = computed(() => {
+// # computed
+const processedList = computed((): ReadonlyArray<BrowserRecord> => {
   return list.value
-    .filter((item: BrowserRecord) =>
+    .filter((item: BrowserRecord): boolean =>
       item.nameLowerCase.includes(searchString.value.toLocaleLowerCase()),
     )
     .sort((a: BrowserRecord, b: BrowserRecord): number =>
@@ -31,13 +31,13 @@ const processedList = computed(() => {
     )
 })
 
-// # created.
-onMounted(() => {
+// # created
+onMounted((): void => {
   fillDefaultList()
 })
 
-// # methods.
-function resetList() {
+// # methods
+function resetList(): void {
   fillDefaultList()
 }
 
@@ -56,7 +56,7 @@ function tableHoverActionIsVisible(id: number): boolean {
 }
 // endregion ## Table hover
 
-function add(name: BrowserRecord['name'], score: BrowserRecord['score']) {
+function add(name: BrowserRecord['name'], score: BrowserRecord['score']): void {
   const nameLowerCase = name.toLowerCase()
   const gamePlayer = {
     id: formRecord.value.id++,
@@ -67,7 +67,7 @@ function add(name: BrowserRecord['name'], score: BrowserRecord['score']) {
   list.value.push(gamePlayer)
 }
 
-function sort() {
+function sort(): void {
   sortingState.value.ascending = !sortingState.value.ascending
   sortingState.value.buttonText = sortingState.value.ascending ? '↓' : '↑'
 }
