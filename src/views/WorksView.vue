@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import BaseCheckboxCollection from '../components/base/BaseCheckboxCollection.vue'
-import GamePlayersBrowser from '../components/works/GamePlayersBrowser.vue'
+import GamePlayersBrowser from '../entities/game-players/GamePlayersBrowser.vue'
 
 const need = ref({
   HelloWorld: false,
