@@ -124,6 +124,7 @@ function prepareGamePlayers(gamePlayers: ReadonlyArray<GamePlayer>): ReadonlyArr
 
 <template>
   <div class="app-root">
+    <h1>Game players browser</h1>
     <button @click="resetList">Reset game players list</button>
     <br />
     <table class="app-list">

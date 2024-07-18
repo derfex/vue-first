@@ -5,7 +5,6 @@ import ClickCounter from '../components/works/ClickCounter.vue'
 import GamePlayersBrowser from '../entities/game-players/GamePlayersBrowser.vue'
 
 const need = ref({
-  HelloWorld: false,
   ClickCounter: true,
   GamePlayersBrowser: true,
 })
